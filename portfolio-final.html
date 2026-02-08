@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amaury Pochic | Character Artist - VES Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Permanent+Marker&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #080808;
+            --brand-red: #ff3333;
+            --text-light: #f4f4f5;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        /* TEXTURES & BACKGROUNDS */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* TYPOGRAPHY */
+        .font-headline {
+            font-family: 'Anton', sans-serif;
+            text-transform: uppercase;
+            line-height: 0.85;
+            font-size: clamp(3rem, 12vw, 20rem);
+        }
+        
+        .font-sketch {
+            font-family: 'Permanent Marker', cursive;
+            color: var(--brand-red);
+            transform: rotate(-2deg);
+        }
+
+        .outline-text {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .outline-text:hover {
+            -webkit-text-stroke: 1px var(--brand-red);
+            color: rgba(255, 51, 51, 0.2);
+        }
+
+        /* ANIMATIONS HERO */
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-100px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(calc(50% - 5vw + 100px)) rotate(-3deg);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(calc(50% - 5vw)) rotate(-3deg);
+            }
+        }
+
+        @keyframes glitchShift {
+            0%, 100% {
+                transform: translate(0, 0);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translate(-3px, 0);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(3px, 0);
+                opacity: 0.4;
+            }
+            75% {
+                transform: translate(-2px, 0);
+                opacity: 0.6;
+            }
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: translateX(calc(50% - 5vw)) rotate(-3deg) scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: translateX(calc(50% - 5vw)) rotate(-3deg) scale(0.98);
+            }
+        }
+
+        .animate-slide-left {
+            animation: slideInLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-slide-right {
+            animation: slideInRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .animate-glitch {
+            animation: glitchShift 3s ease-in-out infinite;
+        }
+
+        .animate-blink {
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        .typewriter-line {
+            overflow: hidden;
+            white-space: nowrap;
+            display: inline-block;
+            width: 0;
+        }
+
+        .typewriter-line.show {
+            animation: typewriter 0.8s steps(40, end) forwards;
+        }
+
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-400 { animation-delay: 0.4s; }
+
+        .hero-text {
+            opacity: 0;
+        }
+
+        /* ANIMATION MARQUEE */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee-content { 
+            display: flex; 
+            animation: marquee 25s linear infinite;
+            font-size: clamp(2rem, 5vw, 5rem);
+        }
+
+        /* DIAPORAMA AUTOMATIQUE ET AU SURVOL */
+        .slideshow-container { position: relative; width: 100%; height: 100%; }
+        .slide-img {
+            position: absolute; inset: 0; opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            object-fit: cover;
+            will-change: opacity;
+        }
+        .slide-img:first-child { opacity: 1; }
+        
+        .is-animating .slide-img:nth-child(1),
+        .project-card:hover .slide-img:nth-child(1) { animation: slideCycle 3s infinite step-end; }
+        
+        .is-animating .slide-img:nth-child(2),
+        .project-card:hover .slide-img:nth-child(2) { animation: slideCycle 3s infinite 1s step-end; }
+        
+        .is-animating .slide-img:nth-child(3),
+        .project-card:hover .slide-img:nth-child(3) { animation: slideCycle 3s infinite 2s step-end; }
+
+        @keyframes slideCycle {
+            0%, 33.32% { opacity: 1; z-index: 10; }
+            33.33%, 100% { opacity: 0; z-index: 0; }
+        }
+
+        /* SECTION SCROLL DESIGNER - SCROLL PLUS RAPIDE */
+        .horizontal-section {
+            height: 400vh;
+            position: relative;
+        }
+        .sticky-box {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .text-overlay {
+            position: absolute;
+            left: 5vw;
+            width: 35vw;
+            z-index: 20;
+        }
+
+        .project-title {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            pointer-events: none;
+        }
+
+        .project-title.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        .image-scroller {
+            display: flex;
+            padding-left: 45vw;
+            gap: 20vw;
+            will-change: transform;
+        }
+
+        .image-item {
+            flex-shrink: 0;
+            width: 55vw;
+            height: 65vh;
+            transition: transform 0.5s ease;
+        }
+        
+        .image-item.is-animating {
+            transform: scale(1.02);
+            border-color: var(--brand-red);
+        }
+
+        .category-label {
+            position: absolute;
+            top: 10vh;
+            left: 5vw;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--brand-red);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            z-index: 30;
+        }
+
+        /* CARD FAN ANIMATION POUR CONTACT */
+        .project-cards-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4vw;
+            margin: 3rem auto;
+            flex-wrap: wrap;
+        }
+
+        .project-card-item {
+            width: clamp(250px, 25vw, 350px);
+            height: clamp(350px, 35vw, 500px);
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .project-card-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card-item:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(255, 51, 51, 0.5);
+        }
+
+        .project-card-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* OVERLAY PORTFOLIO */
+        .portfolio-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .portfolio-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .portfolio-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .close-overlay {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--brand-red);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 10001;
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .close-overlay:hover {
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .portfolio-header {
+            margin-bottom: 3rem;
+        }
+
+        .portfolio-header .media-type {
+            color: var(--brand-red);
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-header .project-title {
+            color: #f4d58d;
+            font-size: clamp(2rem, 5vw, 4rem);
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .portfolio-header .project-description {
+            color: white;
+            font-size: clamp(1rem, 1.5vw, 1.2rem);
+            line-height: 1.8;
+            max-width: 800px;
+        }
+
+        .portfolio-book {
+            margin: 4rem 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .book-container {
+            position: relative;
+            width: clamp(600px, 80vw, 1000px);
+            height: clamp(400px, 50vw, 700px);
+            perspective: 2000px;
+        }
+
+        .book-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #f4e8d8;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            padding: 3rem;
+            overflow: hidden;
+        }
+
+        .book-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 2px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .portfolio-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .image-slot {
+            aspect-ratio: 4/3;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+
+        .image-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .portfolio-overlay.active .portfolio-content > * {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .portfolio-overlay.active .portfolio-content > *:nth-child(2) {
+            animation-delay: 0.1s;
+        }
+
+        .portfolio-overlay.active .portfolio-content > *:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        /* FLIP CARD EFFECT POUR THE CRAFT */
+        .flip-card {
+            perspective: 1000px;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            overflow: hidden;
+        }
+
+        .flip-card-back {
+            transform: rotateY(180deg);
+            background: #1a1a1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        /* GLITCH OVERLAY EFFECT */
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+
+        .glitch-shape {
+            position: absolute;
+            background: var(--brand-red);
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        /* RESPONSIVE DESIGN */
+        
+        /* Large screens - optimisation 4K */
+        @media (min-width: 2560px) {
+            .project-cards-container {
+                gap: 5vw;
+            }
+
+            .project-card-item {
+                width: clamp(300px, 20vw, 400px);
+                height: clamp(420px, 28vw, 560px);
+            }
+            
+            .image-item {
+                width: 45vw;
+            }
+        }
+
+        /* Desktop standard */
+        @media (max-width: 1920px) {
+            .font-headline {
+                font-size: clamp(3rem, 8vw, 12rem);
+            }
+        }
+
+        /* Laptop / Tablette landscape */
+        @media (max-width: 1440px) {
+            .project-cards-container {
+                gap: 3vw;
+            }
+
+            .project-card-item {
+                width: clamp(220px, 28vw, 320px);
+                height: clamp(320px, 38vw, 450px);
+            }
+
+            .image-item {
+                width: 60vw;
+                height: 60vh;
+            }
+
+            .text-overlay {
+                width: 40vw;
+            }
+
+            .project-title h2 {
+                font-size: clamp(2rem, 6vw, 5rem) !important;
+            }
+
+            .category-label {
+                font-size: clamp(0.8rem, 1vw, 1.2rem);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .project-cards-container {
+                gap: 2rem;
+            }
+
+            .project-card-item {
+                width: clamp(200px, 30vw, 280px);
+                height: clamp(300px, 40vw, 400px);
+            }
+
+            .text-overlay {
+                width: 50vw;
+                left: 3vw;
+            }
+
+            .image-scroller {
+                padding-left: 55vw;
+                gap: 15vw;
+            }
+
+            .image-item {
+                width: 65vw;
+                height: 55vh;
+            }
+
+            .project-title h2 {
+                font-size: clamp(1.5rem, 5vw, 4rem) !important;
+            }
+        }
+
+        /* Tablette portrait */
+        @media (max-width: 768px) {
+            .project-cards-container {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .project-card-item {
+                width: clamp(250px, 70vw, 350px);
+                height: clamp(350px, 80vw, 500px);
+            }
+
+            .portfolio-content {
+                padding: 2rem 1rem;
+            }
+
+            .book-container {
+                width: 90vw;
+                height: 60vw;
+            }
+
+            .portfolio-images {
+                grid-template-columns: 1fr;
+            }
+
+            .image-item {
+                width: 75vw;
+                height: 50vh;
+            }
+
+            .category-label {
+                font-size: clamp(0.7rem, 1.5vw, 1rem);
+                top: 5vh;
+            }
+
+            .text-overlay {
+                width: 65vw;
+                left: 2vw;
+            }
+
+            .image-scroller {
+                padding-left: 70vw;
+                gap: 12vw;
+            }
+
+            .project-title h2 {
+                font-size: clamp(1.2rem, 4vw, 3rem) !important;
+            }
+
+            .horizontal-section {
+                height: 350vh;
+            }
+
+            /* THE CRAFT cards spacing */
+            .grid {
+                padding: 0 1rem;
+            }
+
+            section {
+                overflow-x: hidden;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .project-cards-container {
+                gap: 1.5rem;
+            }
+
+            .project-card-item {
+                width: clamp(200px, 80vw, 300px);
+                height: clamp(280px, 100vw, 420px);
+            }
+
+            .image-item {
+                width: 85vw;
+                height: 45vh;
+            }
+
+            .text-overlay {
+                width: 80vw;
+            }
+
+            .image-scroller {
+                padding-left: 85vw;
+            }
+
+            .project-title h2 {
+                font-size: clamp(1rem, 3.5vw, 2rem) !important;
+            }
+
+            .horizontal-section {
+                height: 300vh;
+            }
+
+            .close-overlay {
+                top: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+
+            .book-container {
+                width: 95vw;
+                height: 70vw;
+            }
+
+            .book-page {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="selection:bg-red-600 selection:text-white">
+
+    <div class="noise-overlay"></div>
+
+    <!-- GLITCH OVERLAY -->
+    <div class="glitch-overlay" id="glitchContainer"></div>
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full p-6 flex justify-between items-center z-50 mix-blend-difference">
+        <div class="text-xl font-bold tracking-tighter text-white">AMAURY.P</div>
+        <div class="text-xs font-mono border border-white/20 px-3 py-1 rounded-full text-white">VES CANDIDATE 2026</div>
+    </nav>
+
+    <!-- HEADER / HERO AVEC ANIMATIONS -->
+    <header class="min-h-screen flex flex-col justify-center items-center relative overflow-hidden pt-20">
+        
+        <div class="z-10 text-center relative w-full px-4">
+            <!-- PORTFOLIO - glisse de gauche -->
+            <h1 class="font-headline text-[15vw] tracking-tight relative hero-text animate-slide-left delay-200">
+                PORT<span class="text-[#ff3333]">FOLIO</span>
+            </h1>
+            
+            <!-- Character Artist - positionné au-dessus de LIO avec rotation et pulse -->
+            <p class="font-sketch text-2xl absolute hero-text" style="
+                top: -2.5rem; 
+                right: 30%; 
+                transform: translateX(calc(50% - 5vw)) rotate(-3deg);
+                animation: slideInRight 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards, pulse 2s ease-in-out infinite; 
+                animation-delay: 0s, 1.2s;
+                transform-origin: center;
+            ">Character Artist</p>
+            
+            <!-- AMAURY POCHIC - en dessous avec effet glitch -->
+            <h2 class="font-headline text-[8vw] outline-text mt-4 hero-text animate-glitch delay-400">
+                AMAURY POCHIC
+            </h2>
+        </div>
+
+        <!-- Statut - typewriter effect -->
+        <div class="absolute bottom-10 left-10 max-w-xs text-sm text-gray-400 font-mono" id="statusBox">
+            <span class="text-red-500 font-bold block mb-2 typewriter-line">STATUT ACTUEL :</span>
+            <span class="typewriter-line block">SENIOR MODELER @ RODEO FX.</span>
+            <span class="typewriter-line block">EX-LEAD @ MPC & MATHEMATIC.</span>
+            <span class="typewriter-line block">INSTRUCTEUR @ ESRA/YNOV.</span>
+        </div>
+        
+        <!-- Flèche - rotation et clignotement -->
+        <svg class="absolute bottom-10 right-20 w-32 h-32 text-[#ff3333] opacity-80 animate-blink" style="transform: rotate(20deg);" viewBox="0 0 100 100">
+            <path d="M10,50 Q40,30 80,62" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="5,5"/>
+            <path d="M90,70 L80,50 M90,70 L72,70" fill="none" stroke="currentColor" stroke-width="3"/>
+            <text x="8" y="90" class="font-sketch text-[8px]" fill="currentColor">Défiler vers le bas !</text>
+        </svg>
+    </header>
+
+    <!-- MARQUEE -->
+    <div class="py-10 bg-[#ff3333] text-black overflow-hidden border-y border-black transform -rotate-1 z-20 relative">
+        <div class="marquee-content font-headline text-5xl">
+            <span class="mx-8">MODELING</span> • <span class="mx-8">SCULPTING</span> • <span class="mx-8">VES AWARD NOMINEE</span> • <span class="mx-8">CHARACTER ART</span> • <span class="mx-8">MODELING</span> • <span class="mx-8">SCULPTING</span> • <span class="mx-8">VES AWARD NOMINEE</span> • <span class="mx-8">CHARACTER ART</span> •
+        </div>
+    </div>
+
+    <!-- SECTION 01: FILMS CINÉMA -->
+    <div class="horizontal-section" id="cinemaSection">
+        <div class="sticky-box">
+            <div class="category-label">01 — Films Cinéma</div>
+            
+            <div class="text-overlay">
+                <div class="project-title active" data-index="0">
+                    <h2 class="font-headline text-8xl mb-4">AQUAMAN<br>2</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Creature Modeler @ Rodeo FX</p>
+                </div>
+                <div class="project-title" data-index="1">
+                    <h2 class="font-headline text-8xl mb-4">SOLDAT<br>BLANC</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Character Modeler @ Trimaran</p>
+                </div>
+                <div class="project-title" data-index="2">
+                    <h2 class="font-headline text-8xl mb-4">ALLEGIANT<br>3</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">VFX Artist @ Multiply</p>
+                </div>
+                <div class="project-title" data-index="3">
+                    <h2 class="font-headline text-8xl mb-4">ATHENA</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Senior Modeler</p>
+                </div>
+                <div class="project-title" data-index="4">
+                    <h2 class="font-headline text-8xl mb-4">AMERICAN<br>GODS</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Creature Artist</p>
+                </div>
+            </div>
+
+            <div class="image-scroller" id="cinemaScroller">
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character03.jpg" class="slide-img" alt="Aquaman 2 shot 1"><img src="Character01.jpg" class="slide-img" alt="Aquaman 2 shot 2"><img src="Character02.jpg" class="slide-img" alt="Aquaman 2 shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Soldat Blanc shot 1"><img src="Character01.jpg" class="slide-img" alt="Soldat Blanc shot 2"><img src="05.jpg" class="slide-img" alt="Soldat Blanc shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Allegiant 3 shot 1"><img src="05.jpg" class="slide-img" alt="Allegiant 3 shot 2"><img src="Character05.jpg" class="slide-img" alt="Allegiant 3 shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="Athena shot 1"><img src="guff.jpg" class="slide-img" alt="Athena shot 2"><img src="Character03.jpg" class="slide-img" alt="Athena shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character02.jpg" class="slide-img" alt="American Gods shot 1"><img src="Character03.jpg" class="slide-img" alt="American Gods shot 2"><img src="Global02.JPG" class="slide-img" alt="American Gods shot 3"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 02: CINÉMA D'ANIMATION -->
+    <div class="horizontal-section" id="animSection">
+        <div class="sticky-box bg-[#111]">
+            <div class="category-label">02 — Cinéma d'Animation</div>
+            
+            <div class="text-overlay">
+                <div class="project-title active" data-index="0">
+                    <h2 class="font-headline text-8xl mb-4 text-[#ff3333]">MINIONS<br>2</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Fx Environment modeling & Simulation @ Illumination Studio Paris</p>
+                </div>
+                <div class="project-title" data-index="1">
+                    <h2 class="font-headline text-8xl mb-4 text-[#ff3333]">WHITE<br>FANG</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Modeler Assets & Environment @ Circus</p>
+                </div>
+                <div class="project-title" data-index="2">
+                    <h2 class="font-headline text-8xl mb-4">BAT<br>WHEELS</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Senior Modeler Character, Assets & Environment @ Superprod</p>
+                </div>
+                <div class="project-title" data-index="3">
+                    <h2 class="font-headline text-8xl mb-4">CHIEN<br>ET CHAT</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Character Artist @ Digital District</p>
+                </div>
+                <div class="project-title" data-index="4">
+                    <h2 class="font-headline text-8xl mb-4">CANDY-UP</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Character Modeling & Shading @ Circus</p>
+                </div>
+            </div>
+
+            <div class="image-scroller" id="animScroller">
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="Minions 2 shot 1"><img src="guff.jpg" class="slide-img" alt="Minions 2 shot 2"><img src="05.jpg" class="slide-img" alt="Minions 2 shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character01.jpg" class="slide-img" alt="White Fang shot 1"><img src="Character05.jpg" class="slide-img" alt="White Fang shot 2"><img src="Character03.jpg" class="slide-img" alt="White Fang shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Batwheels shot 1"><img src="Character02.jpg" class="slide-img" alt="Batwheels shot 2"><img src="05.jpg" class="slide-img" alt="Batwheels shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Cactus.jpg" class="slide-img" alt="Chien et Chat shot 1"><img src="Character01.jpg" class="slide-img" alt="Chien et Chat shot 2"><img src="Character05.jpg" class="slide-img" alt="Chien et Chat shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Candy-Up shot 1"><img src="Character02.jpg" class="slide-img" alt="Candy-Up shot 2"><img src="Work.jpg" class="slide-img" alt="Candy-Up shot 3"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 03: PUBLICITÉ -->
+    <div class="horizontal-section" id="pubSection">
+        <div class="sticky-box">
+            <div class="category-label">03 — Publicité</div>
+            
+            <div class="text-overlay">
+                <div class="project-title active" data-index="0">
+                    <h2 class="font-headline text-8xl mb-4 text-[#ff3333]">HELL<br>RAISER</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Lead Character Modeler & Lookdev Artist @ Mathematic Studio</p>
+                </div>
+                <div class="project-title" data-index="1">
+                    <h2 class="font-headline text-8xl mb-4 text-[#ff3333]">ENDLESS<br>DUNGEON</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Principal Character Modeler @ Supamonks</p>
+                </div>
+                <div class="project-title" data-index="2">
+                    <h2 class="font-headline text-8xl mb-4">VW<br>MINIONS</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Senior Assets Modeler @ Illumination Studio Paris</p>
+                </div>
+                <div class="project-title" data-index="3">
+                    <h2 class="font-headline text-8xl mb-4">ATOS</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Assets Modeler @ Multiply</p>
+                </div>
+                <div class="project-title" data-index="4">
+                    <h2 class="font-headline text-8xl mb-4">HOUR OF<br>WITCH</h2>
+                    <p class="text-gray-400 font-mono text-sm uppercase tracking-widest">Lead Character Modeler & Lookdev Artist @ Mathematic Studio</p>
+                </div>
+            </div>
+
+            <div class="image-scroller" id="pubScroller">
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character03.jpg" class="slide-img" alt="Hellraiser shot 1"><img src="Character01.jpg" class="slide-img" alt="Hellraiser shot 2"><img src="Character02.jpg" class="slide-img" alt="Hellraiser shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Endless Dungeon shot 1"><img src="Character05.jpg" class="slide-img" alt="Endless Dungeon shot 2"><img src="05.jpg" class="slide-img" alt="Endless Dungeon shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="VW Minions shot 1"><img src="guff.jpg" class="slide-img" alt="VW Minions shot 2"><img src="05.jpg" class="slide-img" alt="VW Minions shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Atos shot 1"><img src="Character01.jpg" class="slide-img" alt="Atos shot 2"><img src="Character02.jpg" class="slide-img" alt="Atos shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character02.jpg" class="slide-img" alt="Hour of Witch shot 1"><img src="Character03.jpg" class="slide-img" alt="Hour of Witch shot 2"><img src="Global02.JPG" class="slide-img" alt="Hour of Witch shot 3"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MARQUEE BLANC AVEC TEXTE ROUGE -->
+    <div class="py-10 bg-white text-[#ff3333] overflow-hidden border-y border-[#ff3333] transform rotate-1 z-20 relative">
+        <div class="marquee-content font-headline text-5xl">
+            <span class="mx-8">TEACHING</span> • <span class="mx-8">LIVE DEMOS</span> • <span class="mx-8">ZBRUSH MASTER</span> • <span class="mx-8">ESRA / YNOV</span> • <span class="mx-8">TEACHING</span> • <span class="mx-8">LIVE DEMOS</span> • <span class="mx-8">ZBRUSH MASTER</span> • <span class="mx-8">ESRA / YNOV</span> •
+        </div>
+    </div>
+
+    <!-- SECTION 04: TEACHING / LIVE DEMOS -->
+    <section class="py-32 px-4 md:px-10 relative bg-[#080808] min-h-[200vh]" id="craftSection">
+        <div class="sticky top-0 min-h-screen flex items-center">
+            <div class="max-w-6xl mx-auto w-full">
+                <div class="text-center mb-20 relative">
+                    <h2 class="font-headline text-8xl md:text-9xl outline-text z-10 relative">THE CRAFT</h2>
+                    <h2 class="font-headline text-8xl md:text-9xl absolute top-1 left-0 w-full text-[#ff3333] opacity-30 blur-sm z-0">THE CRAFT</h2>
+                    <p class="font-sketch text-2xl text-white absolute top-0 right-1/4 rotate-12 bg-[#ff3333] px-4 py-1 transform translate-x-12 -translate-y-8 shadow-lg">Live Demos!</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-20">
+                <!-- Card 1: THE ORC -->
+                <div class="bg-[#111] p-2 border border-white/10 hover:border-[#ff3333] transition-colors group">
+                    <div class="flip-card aspect-[3/4]">
+                        <div class="flip-card-inner">
+                            <!-- FRONT -->
+                            <div class="flip-card-front">
+                                <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
+                                    <img src="Orc.png" class="w-full h-full object-cover object-top" alt="Orc Sculpt Live">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                                    <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">THE ORC</span>
+                                </div>
+                            </div>
+                            <!-- BACK -->
+                            <div class="flip-card-back border border-[#ff3333]">
+                                <h3 class="font-headline text-3xl text-[#ff3333] mb-4">LIVE SCULPT</h3>
+                                <p class="text-gray-300 text-sm text-center">Teaching facial anatomy and cloth wrinkles in Zbrush. Real-time demonstration for students.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-white">LIVE SCULPT</h4>
+                        <p class="text-xs text-gray-500 mt-1">Teaching facial anatomy and cloth wrinkles in Zbrush.</p>
+                    </div>
+                </div>
+
+                <!-- Card 2: THE GOBLIN -->
+                <div class="bg-[#111] p-2 border border-white/10 hover:border-[#ff3333] transition-colors group transform md:-translate-y-12">
+                    <div class="flip-card aspect-[3/4]">
+                        <div class="flip-card-inner">
+                            <!-- FRONT -->
+                            <div class="flip-card-front">
+                                <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
+                                    <img src="GOBELIN_Posing.png" class="w-full h-full object-cover" alt="Goblin Posing">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                                    <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">THE GOBLIN</span>
+                                </div>
+                            </div>
+                            <!-- BACK -->
+                            <div class="flip-card-back border border-[#ff3333]">
+                                <h3 class="font-headline text-3xl text-[#ff3333] mb-4">TEXTURING & POSING</h3>
+                                <p class="text-gray-300 text-sm text-center">Full workflow breakdown: Skin details to final render. Complete production pipeline.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-white">TEXTURING & POSING</h4>
+                        <p class="text-xs text-gray-500 mt-1">Full workflow breakdown: Skin details to final render.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: THE CACTUS -->
+                <div class="bg-[#111] p-2 border border-white/10 hover:border-[#ff3333] transition-colors group">
+                    <div class="flip-card aspect-[3/4]">
+                        <div class="flip-card-inner">
+                            <!-- FRONT -->
+                            <div class="flip-card-front">
+                                <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
+                                    <img src="Cactus.jpg" class="w-full h-full object-cover" alt="Stylized Cactus">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
+                                    <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">CACTUS KING</span>
+                                </div>
+                            </div>
+                            <!-- BACK -->
+                            <div class="flip-card-back border border-[#ff3333]">
+                                <h3 class="font-headline text-3xl text-[#ff3333] mb-4">STYLIZED ART</h3>
+                                <p class="text-gray-300 text-sm text-center">Teaching shapes and appealing surfacing for animation. Character design principles.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-white">STYLIZED ART</h4>
+                        <p class="text-xs text-gray-500 mt-1">Teaching shapes and appealing surfacing for animation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER / CONTACT -->
+    <footer class="min-h-screen bg-[#ff3333] text-black flex flex-col justify-between p-10 relative z-30">
+        <div class="flex justify-between items-start">
+            <h2 class="font-headline text-[15vw]">CONTACT</h2>
+            <div class="w-32 h-32 rotate-12">
+                <img src="letsconnect.png" class="w-full h-full object-contain mix-blend-multiply" alt="Let's Connect Sketch">
+            </div>
+        </div>
+
+        <!-- CARD PROJECTS CENTER -->
+        <div class="project-cards-container">
+            <div class="project-card-item" onclick="openPortfolio(0)">
+                <img src="Orc.png" alt="Project 1">
+            </div>
+            <div class="project-card-item" onclick="openPortfolio(1)">
+                <img src="GOBELIN_Posing.png" alt="Project 2">
+            </div>
+            <div class="project-card-item" onclick="openPortfolio(2)">
+                <img src="Cactus.jpg" alt="Project 3">
+            </div>
+        </div>
+
+        <!-- PORTFOLIO OVERLAYS -->
+        <div class="portfolio-overlay" id="overlay0">
+            <button class="close-overlay" onclick="closePortfolio(0)">×</button>
+            <div class="portfolio-content">
+                <div class="portfolio-header">
+                    <div class="media-type">Animation / Character Design</div>
+                    <h2 class="project-title">The Orc - Live Sculpting Session</h2>
+                    <p class="project-description">
+                        Teaching demonstration focusing on facial anatomy and cloth wrinkles in ZBrush. 
+                        This live sculpting session explores the fundamentals of realistic character modeling, 
+                        emphasizing the importance of anatomical structure and surface detail in creating 
+                        believable digital characters.
+                    </p>
+                </div>
+
+                <div class="portfolio-book">
+                    <div class="book-container">
+                        <div class="book-page">
+                            <div class="portfolio-images">
+                                <div class="image-slot">
+                                    <img src="Orc.png" alt="Orc sculpt detail 1">
+                                </div>
+                                <div class="image-slot">Image slot 2</div>
+                                <div class="image-slot">Image slot 3</div>
+                                <div class="image-slot">Image slot 4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-overlay" id="overlay1">
+            <button class="close-overlay" onclick="closePortfolio(1)">×</button>
+            <div class="portfolio-content">
+                <div class="portfolio-header">
+                    <div class="media-type">Animation / Texturing & Posing</div>
+                    <h2 class="project-title">The Goblin - Complete Workflow</h2>
+                    <p class="project-description">
+                        Full workflow breakdown from initial sculpt to final render. This project demonstrates 
+                        the complete pipeline for creating stylized characters, including detailed skin texturing, 
+                        subsurface scattering setup, and dynamic posing techniques.
+                    </p>
+                </div>
+
+                <div class="portfolio-book">
+                    <div class="book-container">
+                        <div class="book-page">
+                            <div class="portfolio-images">
+                                <div class="image-slot">
+                                    <img src="GOBELIN_Posing.png" alt="Goblin detail 1">
+                                </div>
+                                <div class="image-slot">Image slot 2</div>
+                                <div class="image-slot">Image slot 3</div>
+                                <div class="image-slot">Image slot 4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="portfolio-overlay" id="overlay2">
+            <button class="close-overlay" onclick="closePortfolio(2)">×</button>
+            <div class="portfolio-content">
+                <div class="portfolio-header">
+                    <div class="media-type">Animation / Stylized Art</div>
+                    <h2 class="project-title">Cactus King - Character Design</h2>
+                    <p class="project-description">
+                        Exploration of stylized character design for animation. This project focuses on 
+                        creating appealing shapes and surfaces suitable for animated productions, 
+                        demonstrating principles of exaggeration and clarity in character modeling.
+                    </p>
+                </div>
+
+                <div class="portfolio-book">
+                    <div class="book-container">
+                        <div class="book-page">
+                            <div class="portfolio-images">
+                                <div class="image-slot">
+                                    <img src="Cactus.jpg" alt="Cactus detail 1">
+                                </div>
+                                <div class="image-slot">Image slot 2</div>
+                                <div class="image-slot">Image slot 3</div>
+                                <div class="image-slot">Image slot 4</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-end gap-10">
+            <div class="font-headline text-5xl flex flex-col">
+                <a href="#" class="hover:text-white transition-colors">LINKEDIN ↗</a>
+                <a href="#" class="hover:text-white transition-colors">IMDB ↗</a>
+                <a href="#" class="hover:text-white transition-colors">INSTAGRAM ↗</a>
+            </div>
+            <div class="text-right font-mono text-xs uppercase tracking-tighter">
+                Amaury Pochic — Senior Modeler<br>Rodeo FX / Paris 2026
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation machine à écrire pour le statut
+        window.addEventListener('load', function() {
+            const lines = document.querySelectorAll('#statusBox .typewriter-line');
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    line.classList.add('show');
+                }, index * 1000);
+            });
+        });
+
+        // GÉNÉRATEUR DE GLITCHS ALÉATOIRES
+        function createRandomGlitch() {
+            const container = document.getElementById('glitchContainer');
+            const shape = document.createElement('div');
+            shape.className = 'glitch-shape';
+            
+            // Formes aléatoires
+            const shapes = ['line', 'circle', 'square', 'triangle'];
+            const randomShape = shapes[Math.floor(Math.random() * shapes.length)];
+            
+            // Position aléatoire
+            const top = Math.random() * 100;
+            const left = Math.random() * 100;
+            
+            // Taille aléatoire
+            let width, height, borderRadius = '0';
+            
+            if (randomShape === 'line') {
+                width = 100 + Math.random() * 300;
+                height = 2 + Math.random() * 4;
+            } else if (randomShape === 'circle') {
+                width = height = 50 + Math.random() * 100;
+                borderRadius = '50%';
+            } else if (randomShape === 'square') {
+                width = height = 40 + Math.random() * 80;
+                borderRadius = Math.random() > 0.5 ? '0' : '8px';
+            } else {
+                width = height = 60 + Math.random() * 80;
+                shape.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+            }
+            
+            // Rotation aléatoire
+            const rotation = Math.random() * 360;
+            
+            // Scale aléatoire (divisé par 3)
+            const scale = 0.3 + Math.random() * 0.37; // max 0.67
+            
+            // Opacité aléatoire (max 60%)
+            const maxOpacity = 0.3 + Math.random() * 0.3;
+            
+            // Appliquer les styles
+            shape.style.top = `${top}%`;
+            shape.style.left = `${left}%`;
+            shape.style.width = `${width}px`;
+            shape.style.height = `${height}px`;
+            shape.style.borderRadius = borderRadius;
+            shape.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+            
+            container.appendChild(shape);
+            
+            // Animation de glitch
+            setTimeout(() => {
+                shape.style.opacity = maxOpacity;
+            }, 10);
+            
+            setTimeout(() => {
+                shape.style.opacity = 0;
+            }, 100 + Math.random() * 200);
+            
+            setTimeout(() => {
+                container.removeChild(shape);
+            }, 500);
+        }
+        
+        // Créer des glitchs aléatoirement
+        setInterval(() => {
+            if (Math.random() > 0.7) { // 30% de chance toutes les 500ms
+                createRandomGlitch();
+            }
+        }, 500);
+
+        // PORTFOLIO OVERLAY FUNCTIONS
+        function openPortfolio(index) {
+            const overlay = document.getElementById('overlay' + index);
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePortfolio(index) {
+            const overlay = document.getElementById('overlay' + index);
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close overlay when clicking outside content
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('portfolio-overlay')) {
+                const overlayId = e.target.id;
+                const index = overlayId.replace('overlay', '');
+                closePortfolio(parseInt(index));
+            }
+        });
+
+        // Scroll horizontal sections
+        function setupSection(sectionId, scrollerId) {
+            const section = document.getElementById(sectionId);
+            const scroller = document.getElementById(scrollerId);
+            const titles = section.querySelectorAll('.project-title');
+            const images = section.querySelectorAll('.image-item');
+
+            window.addEventListener('scroll', () => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const scrollTop = window.scrollY;
+
+                if (scrollTop >= sectionTop && scrollTop <= (sectionTop + sectionHeight - windowHeight)) {
+                    const scrolledInside = scrollTop - sectionTop;
+                    const maxScroll = sectionHeight - windowHeight;
+                    const scrollPercent = scrolledInside / maxScroll;
+                    
+                    const totalTranslate = scroller.scrollWidth - (window.innerWidth * 0.45);
+                    const translateX = scrollPercent * totalTranslate;
+                    scroller.style.transform = `translateX(-${translateX}px)`;
+
+                    const activeIndex = Math.min(Math.floor(scrollPercent * 5), 4);
+                    
+                    titles.forEach((t, i) => {
+                        if(i === activeIndex) {
+                            t.classList.add('active');
+                            images[i].classList.add('is-animating');
+                        } else {
+                            t.classList.remove('active');
+                            images[i].classList.remove('is-animating');
+                        }
+                    });
+                }
+            });
+        }
+
+        setupSection('cinemaSection', 'cinemaScroller');
+        setupSection('animSection', 'animScroller');
+        setupSection('pubSection', 'pubScroller');
+
+        // AUTO-SCROLL avec vraies pauses pour les sections horizontales
+        function autoScrollSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (!section) return;
+
+            let isAutoScrolling = false;
+            let currentProject = 0;
+            const totalProjects = 5;
+            let autoScrollTimeout = null;
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !isAutoScrolling) {
+                        isAutoScrolling = true;
+                        currentProject = 0;
+                        scrollToNextProject();
+                    } else if (!entry.isIntersecting) {
+                        isAutoScrolling = false;
+                        currentProject = 0;
+                        if (autoScrollTimeout) {
+                            clearTimeout(autoScrollTimeout);
+                        }
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            observer.observe(section);
+
+            function scrollToNextProject() {
+                if (!isAutoScrolling || currentProject >= totalProjects) {
+                    return;
+                }
+
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const maxScroll = sectionHeight - windowHeight;
+                
+                // Position exacte pour chaque projet
+                const targetScrollPercent = currentProject / (totalProjects - 1);
+                const targetScrollPosition = sectionTop + (maxScroll * targetScrollPercent);
+
+                // Scroll fluide
+                window.scrollTo({
+                    top: targetScrollPosition,
+                    behavior: 'smooth'
+                });
+
+                currentProject++;
+
+                // Attendre que le scroll soit fini (1.5s) puis pause de 1s puis projet suivant
+                autoScrollTimeout = setTimeout(() => {
+                    if (isAutoScrolling) {
+                        scrollToNextProject();
+                    }
+                }, 2500); // 1.5s de scroll + 1s de pause
+            }
+        }
+
+        // Activer l'auto-scroll pour les 3 sections
+        setTimeout(() => {
+            autoScrollSection('cinemaSection');
+            autoScrollSection('animSection');
+            autoScrollSection('pubSection');
+        }, 1000);
+    </script>
+
+</body>
+</html>
