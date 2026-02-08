@@ -180,18 +180,88 @@
         }
         .slide-img:first-child { opacity: 1; }
         
-        .is-animating .slide-img:nth-child(1),
-        .project-card:hover .slide-img:nth-child(1) { animation: slideCycle 3s infinite step-end; }
+        /* Animation pour 2 images */
+        .is-animating .slide-img:nth-child(1):nth-last-child(2),
+        .project-card:hover .slide-img:nth-child(1):nth-last-child(2) { 
+            animation: slideCycle2 2s infinite step-end; 
+        }
+        .is-animating .slide-img:nth-child(2):nth-last-child(1),
+        .project-card:hover .slide-img:nth-child(2):nth-last-child(1) { 
+            animation: slideCycle2 2s infinite 1s step-end; 
+        }
         
-        .is-animating .slide-img:nth-child(2),
-        .project-card:hover .slide-img:nth-child(2) { animation: slideCycle 3s infinite 1s step-end; }
-        
-        .is-animating .slide-img:nth-child(3),
-        .project-card:hover .slide-img:nth-child(3) { animation: slideCycle 3s infinite 2s step-end; }
+        /* Animation pour 3 images */
+        .is-animating .slide-img:nth-child(1):nth-last-child(3),
+        .project-card:hover .slide-img:nth-child(1):nth-last-child(3) { 
+            animation: slideCycle3 3s infinite step-end; 
+        }
+        .is-animating .slide-img:nth-child(2):nth-last-child(2),
+        .project-card:hover .slide-img:nth-child(2):nth-last-child(2) { 
+            animation: slideCycle3 3s infinite 1s step-end; 
+        }
+        .is-animating .slide-img:nth-child(3):nth-last-child(1),
+        .project-card:hover .slide-img:nth-child(3):nth-last-child(1) { 
+            animation: slideCycle3 3s infinite 2s step-end; 
+        }
 
-        @keyframes slideCycle {
+        /* Animation pour 4 images */
+        .is-animating .slide-img:nth-child(1):nth-last-child(4),
+        .project-card:hover .slide-img:nth-child(1):nth-last-child(4) { 
+            animation: slideCycle4 4s infinite step-end; 
+        }
+        .is-animating .slide-img:nth-child(2):nth-last-child(3),
+        .project-card:hover .slide-img:nth-child(2):nth-last-child(3) { 
+            animation: slideCycle4 4s infinite 1s step-end; 
+        }
+        .is-animating .slide-img:nth-child(3):nth-last-child(2),
+        .project-card:hover .slide-img:nth-child(3):nth-last-child(2) { 
+            animation: slideCycle4 4s infinite 2s step-end; 
+        }
+        .is-animating .slide-img:nth-child(4):nth-last-child(1),
+        .project-card:hover .slide-img:nth-child(4):nth-last-child(1) { 
+            animation: slideCycle4 4s infinite 3s step-end; 
+        }
+
+        /* Animation pour 5 images */
+        .is-animating .slide-img:nth-child(1):nth-last-child(5),
+        .project-card:hover .slide-img:nth-child(1):nth-last-child(5) { 
+            animation: slideCycle5 5s infinite step-end; 
+        }
+        .is-animating .slide-img:nth-child(2):nth-last-child(4),
+        .project-card:hover .slide-img:nth-child(2):nth-last-child(4) { 
+            animation: slideCycle5 5s infinite 1s step-end; 
+        }
+        .is-animating .slide-img:nth-child(3):nth-last-child(3),
+        .project-card:hover .slide-img:nth-child(3):nth-last-child(3) { 
+            animation: slideCycle5 5s infinite 2s step-end; 
+        }
+        .is-animating .slide-img:nth-child(4):nth-last-child(2),
+        .project-card:hover .slide-img:nth-child(4):nth-last-child(2) { 
+            animation: slideCycle5 5s infinite 3s step-end; 
+        }
+        .is-animating .slide-img:nth-child(5):nth-last-child(1),
+        .project-card:hover .slide-img:nth-child(5):nth-last-child(1) { 
+            animation: slideCycle5 5s infinite 4s step-end; 
+        }
+
+        @keyframes slideCycle2 {
+            0%, 49.99% { opacity: 1; z-index: 10; }
+            50%, 100% { opacity: 0; z-index: 0; }
+        }
+
+        @keyframes slideCycle3 {
             0%, 33.32% { opacity: 1; z-index: 10; }
             33.33%, 100% { opacity: 0; z-index: 0; }
+        }
+
+        @keyframes slideCycle4 {
+            0%, 24.99% { opacity: 1; z-index: 10; }
+            25%, 100% { opacity: 0; z-index: 0; }
+        }
+
+        @keyframes slideCycle5 {
+            0%, 19.99% { opacity: 1; z-index: 10; }
+            20%, 100% { opacity: 0; z-index: 0; }
         }
 
         /* SECTION SCROLL DESIGNER - SCROLL PLUS RAPIDE */
@@ -805,11 +875,11 @@
             </div>
 
             <div class="image-scroller" id="cinemaScroller">
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character03.jpg" class="slide-img" alt="Aquaman 2 shot 1"><img src="Character01.jpg" class="slide-img" alt="Aquaman 2 shot 2"><img src="Character02.jpg" class="slide-img" alt="Aquaman 2 shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Soldat Blanc shot 1"><img src="Character01.jpg" class="slide-img" alt="Soldat Blanc shot 2"><img src="05.jpg" class="slide-img" alt="Soldat Blanc shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Allegiant 3 shot 1"><img src="05.jpg" class="slide-img" alt="Allegiant 3 shot 2"><img src="Character05.jpg" class="slide-img" alt="Allegiant 3 shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="Athena shot 1"><img src="guff.jpg" class="slide-img" alt="Athena shot 2"><img src="Character03.jpg" class="slide-img" alt="Athena shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character02.jpg" class="slide-img" alt="American Gods shot 1"><img src="Character03.jpg" class="slide-img" alt="American Gods shot 2"><img src="Global02.JPG" class="slide-img" alt="American Gods shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="aquaman2-1.jpg" class="slide-img" alt="Aquaman 2 shot 1"><img src="aquaman2-2.jpg" class="slide-img" alt="Aquaman 2 shot 2"><img src="aquaman2-3.jpg" class="slide-img" alt="Aquaman 2 shot 3"><img src="aquaman2-4.jpg" class="slide-img" alt="Aquaman 2 shot 4"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="soldatblanc-1.jpg" class="slide-img" alt="Soldat Blanc shot 1"><img src="soldatblanc-2.jpg" class="slide-img" alt="Soldat Blanc shot 2"><img src="soldatblanc-3.gif" class="slide-img" alt="Soldat Blanc shot 3"><img src="soldatblanc-4.jpg" class="slide-img" alt="Soldat Blanc shot 4"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="allegiant-1.gif" class="slide-img" alt="Allegiant 3 shot 1"><img src="allegiant-2.gif" class="slide-img" alt="Allegiant 3 shot 2"><img src="allegiant-3.gif" class="slide-img" alt="Allegiant 3 shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="athena-1.gif" class="slide-img" alt="Athena shot 1"><img src="athena-2.jpg" class="slide-img" alt="Athena shot 2"><img src="athena-3.png" class="slide-img" alt="Athena shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="americangods-1.gif" class="slide-img" alt="American Gods shot 1"><img src="americangods-2.gif" class="slide-img" alt="American Gods shot 2"><img src="americangods-3.gif" class="slide-img" alt="American Gods shot 3"></div></div>
             </div>
         </div>
     </div>
@@ -843,11 +913,11 @@
             </div>
 
             <div class="image-scroller" id="animScroller">
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="Minions 2 shot 1"><img src="guff.jpg" class="slide-img" alt="Minions 2 shot 2"><img src="05.jpg" class="slide-img" alt="Minions 2 shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character01.jpg" class="slide-img" alt="White Fang shot 1"><img src="Character05.jpg" class="slide-img" alt="White Fang shot 2"><img src="Character03.jpg" class="slide-img" alt="White Fang shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Batwheels shot 1"><img src="Character02.jpg" class="slide-img" alt="Batwheels shot 2"><img src="05.jpg" class="slide-img" alt="Batwheels shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Cactus.jpg" class="slide-img" alt="Chien et Chat shot 1"><img src="Character01.jpg" class="slide-img" alt="Chien et Chat shot 2"><img src="Character05.jpg" class="slide-img" alt="Chien et Chat shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Candy-Up shot 1"><img src="Character02.jpg" class="slide-img" alt="Candy-Up shot 2"><img src="Work.jpg" class="slide-img" alt="Candy-Up shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="minions2-1.jpg" class="slide-img" alt="Minions 2 shot 1"><img src="minions2-2.jpg" class="slide-img" alt="Minions 2 shot 2"><img src="minions2-3.gif" class="slide-img" alt="Minions 2 shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="whitefang-1.jpg" class="slide-img" alt="White Fang shot 1"><img src="whitefang-2.jpg" class="slide-img" alt="White Fang shot 2"><img src="whitefang-3.gif" class="slide-img" alt="White Fang shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="batwheels-1.gif" class="slide-img" alt="Batwheels shot 1"><img src="batwheels-2.gif" class="slide-img" alt="Batwheels shot 2"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="chienetchat-1.jpg" class="slide-img" alt="Chien et Chat shot 1"><img src="chienetchat-2.jpg" class="slide-img" alt="Chien et Chat shot 2"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="candyup-1.gif" class="slide-img" alt="Candy-Up shot 1"><img src="candyup-2.gif" class="slide-img" alt="Candy-Up shot 2"><img src="candyup-3.gif" class="slide-img" alt="Candy-Up shot 3"></div></div>
             </div>
         </div>
     </div>
@@ -881,11 +951,11 @@
             </div>
 
             <div class="image-scroller" id="pubScroller">
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character03.jpg" class="slide-img" alt="Hellraiser shot 1"><img src="Character01.jpg" class="slide-img" alt="Hellraiser shot 2"><img src="Character02.jpg" class="slide-img" alt="Hellraiser shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Global02.JPG" class="slide-img" alt="Endless Dungeon shot 1"><img src="Character05.jpg" class="slide-img" alt="Endless Dungeon shot 2"><img src="05.jpg" class="slide-img" alt="Endless Dungeon shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Work.jpg" class="slide-img" alt="VW Minions shot 1"><img src="guff.jpg" class="slide-img" alt="VW Minions shot 2"><img src="05.jpg" class="slide-img" alt="VW Minions shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character05.jpg" class="slide-img" alt="Atos shot 1"><img src="Character01.jpg" class="slide-img" alt="Atos shot 2"><img src="Character02.jpg" class="slide-img" alt="Atos shot 3"></div></div>
-                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="Character02.jpg" class="slide-img" alt="Hour of Witch shot 1"><img src="Character03.jpg" class="slide-img" alt="Hour of Witch shot 2"><img src="Global02.JPG" class="slide-img" alt="Hour of Witch shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="hellraiser-1.jpg" class="slide-img" alt="Hellraiser shot 1"><img src="hellraiser-2.jpg" class="slide-img" alt="Hellraiser shot 2"><img src="hellraiser-3.jpg" class="slide-img" alt="Hellraiser shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="endlessdungeon-1.jpg" class="slide-img" alt="Endless Dungeon shot 1"><img src="endlessdungeon-2.jpg" class="slide-img" alt="Endless Dungeon shot 2"><img src="endlessdungeon-3.jpg" class="slide-img" alt="Endless Dungeon shot 3"><img src="endlessdungeon-4.jpg" class="slide-img" alt="Endless Dungeon shot 4"><img src="endlessdungeon-5.jpg" class="slide-img" alt="Endless Dungeon shot 5"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="vwminions-1.jpg" class="slide-img" alt="VW Minions shot 1"><img src="vwminions-2.jpg" class="slide-img" alt="VW Minions shot 2"><img src="vwminions-3.jpg" class="slide-img" alt="VW Minions shot 3"><img src="vwminions-4.jpg" class="slide-img" alt="VW Minions shot 4"><img src="vwminions-5.jpg" class="slide-img" alt="VW Minions shot 5"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="atos-1.jpg" class="slide-img" alt="Atos shot 1"><img src="atos-2.gif" class="slide-img" alt="Atos shot 2"><img src="atos-3.gif" class="slide-img" alt="Atos shot 3"></div></div>
+                <div class="image-item project-card"><div class="slideshow-container rounded border border-white/10 overflow-hidden"><img src="hourofwitch-1.jpg" class="slide-img" alt="Hour of Witch shot 1"><img src="hourofwitch-2.jpg" class="slide-img" alt="Hour of Witch shot 2"><img src="hourofwitch-3.jpg" class="slide-img" alt="Hour of Witch shot 3"></div></div>
             </div>
         </div>
     </div>
@@ -915,7 +985,7 @@
                             <!-- FRONT -->
                             <div class="flip-card-front">
                                 <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
-                                    <img src="Orc.png" class="w-full h-full object-cover object-top" alt="Orc Sculpt Live">
+                                    <img src="orc-main.png" class="w-full h-full object-cover object-top" alt="Orc Sculpt Live">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
                                     <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">THE ORC</span>
                                 </div>
@@ -940,7 +1010,7 @@
                             <!-- FRONT -->
                             <div class="flip-card-front">
                                 <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
-                                    <img src="GOBELIN_Posing.png" class="w-full h-full object-cover" alt="Goblin Posing">
+                                    <img src="goblin-main.png" class="w-full h-full object-cover" alt="Goblin Posing">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
                                     <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">THE GOBLIN</span>
                                 </div>
@@ -965,7 +1035,7 @@
                             <!-- FRONT -->
                             <div class="flip-card-front">
                                 <div class="w-full h-full bg-gray-800 overflow-hidden relative grayscale group-hover:grayscale-0 transition-all">
-                                    <img src="Cactus.jpg" class="w-full h-full object-cover" alt="Stylized Cactus">
+                                    <img src="cactus-main.jpg" class="w-full h-full object-cover" alt="Stylized Cactus">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80"></div>
                                     <span class="absolute bottom-4 left-4 font-headline text-4xl text-white">CACTUS KING</span>
                                 </div>
@@ -998,13 +1068,13 @@
         <!-- CARD PROJECTS CENTER -->
         <div class="project-cards-container">
             <div class="project-card-item" onclick="openPortfolio(0)">
-                <img src="Orc.png" alt="Project 1">
+                <img src="orc-main.png" alt="Project 1">
             </div>
             <div class="project-card-item" onclick="openPortfolio(1)">
-                <img src="GOBELIN_Posing.png" alt="Project 2">
+                <img src="goblin-main.png" alt="Project 2">
             </div>
             <div class="project-card-item" onclick="openPortfolio(2)">
-                <img src="Cactus.jpg" alt="Project 3">
+                <img src="cactus-main.jpg" alt="Project 3">
             </div>
         </div>
 
@@ -1028,10 +1098,14 @@
                         <div class="book-page">
                             <div class="portfolio-images">
                                 <div class="image-slot">
-                                    <img src="Orc.png" alt="Orc sculpt detail 1">
+                                    <img src="orc-detail-1.jpg" alt="Orc sculpt detail 1">
                                 </div>
-                                <div class="image-slot">Image slot 2</div>
-                                <div class="image-slot">Image slot 3</div>
+                                <div class="image-slot">
+                                    <img src="orc-detail-2.jpg" alt="Orc sculpt detail 2">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="orc-detail-3.jpg" alt="Orc sculpt detail 3">
+                                </div>
                                 <div class="image-slot">Image slot 4</div>
                             </div>
                         </div>
@@ -1058,11 +1132,23 @@
                         <div class="book-page">
                             <div class="portfolio-images">
                                 <div class="image-slot">
-                                    <img src="GOBELIN_Posing.png" alt="Goblin detail 1">
+                                    <img src="goblin-detail-1.gif" alt="Goblin detail 1">
                                 </div>
-                                <div class="image-slot">Image slot 2</div>
-                                <div class="image-slot">Image slot 3</div>
-                                <div class="image-slot">Image slot 4</div>
+                                <div class="image-slot">
+                                    <img src="goblin-detail-2.jpg" alt="Goblin detail 2">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="goblin-detail-3.jpg" alt="Goblin detail 3">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="goblin-detail-4.jpg" alt="Goblin detail 4">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="goblin-detail-5.jpg" alt="Goblin detail 5">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="goblin-detail-6.jpg" alt="Goblin detail 6">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1088,11 +1174,17 @@
                         <div class="book-page">
                             <div class="portfolio-images">
                                 <div class="image-slot">
-                                    <img src="Cactus.jpg" alt="Cactus detail 1">
+                                    <img src="cactus-detail-1.jpg" alt="Cactus detail 1">
                                 </div>
-                                <div class="image-slot">Image slot 2</div>
-                                <div class="image-slot">Image slot 3</div>
-                                <div class="image-slot">Image slot 4</div>
+                                <div class="image-slot">
+                                    <img src="cactus-detail-2.jpg" alt="Cactus detail 2">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="cactus-detail-3.jpg" alt="Cactus detail 3">
+                                </div>
+                                <div class="image-slot">
+                                    <img src="cactus-detail-4.jpg" alt="Cactus detail 4">
+                                </div>
                             </div>
                         </div>
                     </div>
